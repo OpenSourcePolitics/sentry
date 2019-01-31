@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 
 volumes:
   pgdb:
@@ -26,19 +26,14 @@ services:
     env_file:
       - .env
 
-
   cron:
     image: sentry
     links:
     - redis
     - postgres
     command: "sentry run cron"
-    environment:
-      SENTRY_SECRET_KEY: '!!!SECRET!!!'
-      SENTRY_POSTGRES_HOST: postgres
-      SENTRY_DB_USER: sentry
-      SENTRY_DB_PASSWORD: sentry
-      SENTRY_REDIS_HOST: redis
+    env_file:
+      - .env
 
   worker:
     image: sentry
@@ -46,9 +41,5 @@ services:
     - redis
     - postgres
     command: "sentry run worker"
-    environment:
-      SENTRY_SECRET_KEY: '!!!SECRET!!!'
-      SENTRY_POSTGRES_HOST: postgres
-      SENTRY_DB_USER: sentry
-      SENTRY_DB_PASSWORD: sentry
-      SENTRY_REDIS_HOST: redis
+    env_file:
+      - .env
